@@ -1,0 +1,1135 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Qathrunnada — Kumpulan Nasyid</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Qwigley&family=Amiri:ital@0;1&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --hijau-0:#07130E;
+    --hijau-1:#0C2A1E;
+    --hijau-2:#134632;
+    --hijau-3:#1E6B4A;
+    --hijau-glow:#2F8F63;
+    --putih:#F6F5EF;
+    --putih-dim:#C9D2CB;
+    --hitam:#080807;
+    --emas:#B69A5C;
+    --line:rgba(246,245,239,0.12);
+    --ease:cubic-bezier(.16,.84,.24,1);
+  }
+
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--hitam);
+    color:var(--putih);
+    font-family:'Plus Jakarta Sans',sans-serif;
+    font-weight:400;
+    overflow-x:hidden;
+  }
+  ::selection{background:var(--hijau-3);color:var(--putih);}
+  a{color:inherit;text-decoration:none;}
+  img{display:block;max-width:100%;}
+  button{font-family:inherit;cursor:pointer;}
+
+  .eyebrow{
+    font-size:.68rem; letter-spacing:.28em; text-transform:uppercase;
+    color:var(--emas); font-weight:600;
+    display:flex; align-items:center; gap:.6rem;
+  }
+  .eyebrow::before{content:'';width:22px;height:1px;background:var(--emas);display:inline-block;}
+
+  h1,h2,h3{font-family:'Plus Jakarta Sans',sans-serif;font-weight:700;letter-spacing:-.01em;line-height:1.08;}
+
+  .wrap{max-width:1200px;margin:0 auto;padding:0 6vw;}
+
+  .arabesque{
+    position:absolute; inset:0;
+    background-image:
+      radial-gradient(circle at 50% 50%, transparent 0 18px, rgba(246,245,239,0.045) 19px 20px, transparent 21px),
+      radial-gradient(circle at 0% 0%, transparent 0 18px, rgba(246,245,239,0.045) 19px 20px, transparent 21px),
+      radial-gradient(circle at 100% 0%, transparent 0 18px, rgba(246,245,239,0.045) 19px 20px, transparent 21px),
+      radial-gradient(circle at 0% 100%, transparent 0 18px, rgba(246,245,239,0.045) 19px 20px, transparent 21px),
+      radial-gradient(circle at 100% 100%, transparent 0 18px, rgba(246,245,239,0.045) 19px 20px, transparent 21px);
+    background-size:64px 64px;
+    pointer-events:none;
+  }
+
+  /* ---------- NAV ---------- */
+  header{
+    position:fixed; top:0; left:0; right:0; z-index:200;
+    background:linear-gradient(180deg, rgba(7,19,14,.92), rgba(7,19,14,0));
+    backdrop-filter:blur(6px);
+    transition:background .35s var(--ease);
+  }
+  header.scrolled{background:rgba(7,19,14,.95);}
+  nav{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:1.1rem 6vw;
+  }
+  .nav-logo{
+    font-family:'Qwigley',cursive;
+    font-size:1.9rem;
+    color:var(--putih);
+    letter-spacing:.01em;
+    opacity:0;
+    transform:translateX(-40px);
+    animation:logoSlideIn 1s var(--ease) .2s forwards;
+  }
+  @keyframes logoSlideIn{
+    to{opacity:1; transform:translateX(0);}
+  }
+  .nav-links{
+    display:flex; gap:2.2rem;
+    font-size:.8rem; letter-spacing:.06em; text-transform:uppercase; font-weight:600;
+  }
+  .nav-links a{position:relative; color:var(--putih-dim); transition:color .3s var(--ease);}
+  .nav-links a::after{
+    content:''; position:absolute; left:0; bottom:-6px; width:0%; height:1px;
+    background:var(--emas); transition:width .35s var(--ease);
+  }
+  .nav-links a:hover{color:var(--putih);}
+  .nav-links a:hover::after{width:100%;}
+  .nav-cta{
+    border:1px solid var(--emas); color:var(--emas);
+    padding:.6rem 1.3rem; font-size:.76rem; letter-spacing:.08em; text-transform:uppercase; font-weight:700;
+    transition:all .35s var(--ease);
+  }
+  .nav-cta:hover{background:var(--emas);color:var(--hitam);}
+  .nav-right{display:flex; align-items:center; gap:1.4rem;}
+
+  .nav-toggle{
+    display:none; flex-direction:column; gap:5px;
+    width:26px; background:none; border:none; padding:4px;
+    z-index:210;
+  }
+  .nav-toggle span{width:100%; height:2px; background:var(--putih); transition:all .35s var(--ease);}
+  .nav-toggle.open span:nth-child(1){transform:translateY(7px) rotate(45deg);}
+  .nav-toggle.open span:nth-child(2){opacity:0;}
+  .nav-toggle.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg);}
+
+  .nav-mobile-panel{
+    position:fixed; inset:0 0 0 auto; top:0; right:0;
+    width:min(78vw,320px); height:100vh;
+    background:var(--hijau-1);
+    border-left:1px solid var(--line);
+    display:flex; flex-direction:column; gap:1.8rem;
+    padding:6.5rem 2.2rem 2rem;
+    transform:translateX(100%);
+    transition:transform .5s var(--ease);
+    z-index:150;
+  }
+  .nav-mobile-panel.open{transform:translateX(0);}
+  .nav-mobile-panel a{
+    font-size:1.1rem; font-weight:600; color:var(--putih);
+    padding-bottom:1rem; border-bottom:1px solid var(--line);
+  }
+  .nav-scrim{
+    position:fixed; inset:0; background:rgba(7,19,14,.6);
+    opacity:0; pointer-events:none; transition:opacity .4s var(--ease); z-index:140;
+  }
+  .nav-scrim.open{opacity:1; pointer-events:auto;}
+
+  /* ---------- HERO (weekly rotating banner) ---------- */
+  .hero{position:relative; min-height:100vh; overflow:hidden;}
+  .hero-slides{position:relative; width:100%; height:100vh;}
+  .hero-slide{
+    position:absolute; inset:0;
+    background-size:cover; background-position:center;
+    opacity:0; visibility:hidden;
+    transition:opacity 1.1s var(--ease), visibility 1.1s;
+    display:flex; align-items:center;
+  }
+  .hero-slide.active{opacity:1; visibility:visible; z-index:2;}
+  .hero-slide::before{
+    content:'';
+    position:absolute; inset:0;
+    background:linear-gradient(90deg, rgba(7,19,14,.92) 0%, rgba(7,19,14,.68) 45%, rgba(12,42,30,.55) 100%),
+               linear-gradient(0deg, rgba(7,19,14,.85), transparent 45%);
+  }
+  .hero-slide-inner{position:relative; z-index:2; padding-top:3rem; max-width:640px;}
+  .week-tag{
+    display:inline-flex; align-items:center; gap:.6rem;
+    background:rgba(182,154,92,.14); border:1px solid var(--emas);
+    color:var(--emas); font-size:.68rem; letter-spacing:.2em; text-transform:uppercase; font-weight:700;
+    padding:.5rem 1rem; margin-bottom:1.4rem;
+  }
+  .week-tag .dot-live{width:6px;height:6px;border-radius:50%;background:var(--emas);animation:pulse 1.6s infinite;}
+  @keyframes pulse{0%,100%{opacity:1;}50%{opacity:.3;}}
+  .hero-slide h1{font-size:clamp(2.4rem,5vw,3.6rem); margin-bottom:1rem;}
+  .hero-slide p{color:var(--putih-dim); font-size:.98rem; line-height:1.75; max-width:480px; margin-bottom:2rem;}
+
+  .hero-cta-row{display:flex; gap:1rem; flex-wrap:wrap;}
+
+  .btn{
+    position:relative; display:inline-flex; align-items:center; gap:.6rem;
+    padding:.95rem 1.9rem; font-size:.78rem; font-weight:700; letter-spacing:.1em; text-transform:uppercase;
+    border:1px solid var(--emas); color:var(--putih); overflow:hidden; background:transparent; isolation:isolate;
+    transition:color .45s var(--ease), border-color .45s var(--ease), transform .2s var(--ease);
+  }
+  .btn::before{
+    content:''; position:absolute; inset:0; background:var(--emas);
+    transform:translateX(-101%); transition:transform .5s var(--ease); z-index:-1;
+  }
+  .btn:hover::before{transform:translateX(0);}
+  .btn:hover{color:var(--hitam);}
+  .btn:active{transform:scale(.96);}
+  .btn-ghost{border-color:var(--line); color:var(--putih-dim);}
+  .btn-ghost::before{background:var(--putih);}
+  .btn-ghost:hover{color:var(--hitam); border-color:var(--putih);}
+  .btn svg{width:14px;height:14px; transition:transform .4s var(--ease);}
+  .btn:hover svg{transform:translateX(4px);}
+  .btn[disabled]{opacity:.5; cursor:not-allowed;}
+
+  .hero-nav{
+    position:absolute; left:0; right:0; bottom:2.4rem; z-index:5;
+    display:flex; align-items:center; justify-content:space-between;
+    padding:0 6vw;
+  }
+  .hero-dots{display:flex; gap:.6rem;}
+  .hero-dots .dot{
+    width:28px; height:3px; background:rgba(246,245,239,.28); border:none; padding:0; position:relative; overflow:hidden;
+    transition:background .3s var(--ease);
+  }
+  .hero-dots .dot.active{background:rgba(246,245,239,.28);}
+  .hero-dots .dot span{
+    position:absolute; inset:0; background:var(--emas); transform:scaleX(0); transform-origin:left;
+  }
+  .hero-dots .dot.active span{animation:fillDot 8s linear forwards;}
+  @keyframes fillDot{to{transform:scaleX(1);}}
+  .hero-arrows{display:flex; gap:.7rem;}
+  .hero-arrow{
+    width:42px; height:42px; border:1px solid var(--line); background:rgba(7,19,14,.4); color:var(--putih);
+    display:flex; align-items:center; justify-content:center; transition:all .3s var(--ease);
+  }
+  .hero-arrow:hover{border-color:var(--emas); color:var(--emas); background:rgba(182,154,92,.1);}
+  .hero-arrow svg{width:16px;height:16px;}
+
+  .hero-scroll{
+    position:absolute; top:50%; right:6vw; z-index:5; transform:translateY(-50%) rotate(90deg) translateX(50%);
+    transform-origin:right center;
+    display:flex; align-items:center; gap:.7rem;
+    font-size:.66rem; letter-spacing:.2em; text-transform:uppercase; color:var(--putih-dim);
+  }
+
+  /* ---------- SECTION GENERIC ---------- */
+  section{position:relative; padding:7rem 0;}
+  .section-head{display:grid; grid-template-columns:1.1fr .9fr; gap:3rem; margin-bottom:4rem; align-items:end;}
+  .section-head h2{font-size:clamp(2rem,3.6vw,3.2rem); margin-top:.8rem;}
+  .section-head p{color:var(--putih-dim); font-size:.95rem; line-height:1.75;}
+
+  .reveal{opacity:0; transform:translateY(28px); transition:opacity .9s var(--ease), transform .9s var(--ease);}
+  .reveal.in{opacity:1; transform:translateY(0);}
+
+  /* ---------- ABOUT ---------- */
+  .about{background:var(--hijau-1);}
+  .about-grid{display:grid; grid-template-columns:.85fr 1.15fr; gap:4rem; align-items:center;}
+  .about-photo{position:relative; aspect-ratio:3/4; background:url('assets/group-photo.jpg') center top / cover; filter:sepia(.12) saturate(1.05);}
+  .about-photo::after{content:''; position:absolute; inset:0; background:linear-gradient(0deg, rgba(7,19,14,.75), transparent 45%);}
+  .stat-chip{position:absolute; bottom:-1px; left:-1px; background:var(--hijau-3); padding:1.1rem 1.4rem; display:flex; gap:1.6rem;}
+  .stat-chip div b{display:block; font-size:1.5rem;}
+  .stat-chip div span{font-size:.6rem; letter-spacing:.14em; text-transform:uppercase; color:var(--putih-dim);}
+  .about-copy p{color:var(--putih-dim); line-height:1.9; font-size:1rem; margin-bottom:1.2rem;}
+  .about-copy p:first-of-type{color:var(--putih); font-size:1.15rem; font-weight:500;}
+  .pillar-list{margin-top:2rem; display:grid; gap:1.1rem;}
+  .pillar{display:flex; gap:1rem; padding:1rem 0; border-top:1px solid var(--line);}
+  .pillar b{font-weight:700; font-size:.95rem; min-width:150px; color:var(--putih);}
+  .pillar span{color:var(--putih-dim); font-size:.88rem; line-height:1.6;}
+
+  /* ---------- LIVE PERFORMANCE ---------- */
+  .live{background:linear-gradient(100deg, rgba(7,19,14,.94) 20%, rgba(7,19,14,.55) 60%, rgba(7,19,14,.9)), url('assets/group-photo.jpg') center 35% / cover fixed;}
+
+  .stream-card{
+    display:grid; grid-template-columns:1.1fr .9fr; gap:0;
+    border:1px solid var(--line); background:rgba(7,19,14,.6); margin-bottom:3.5rem;
+  }
+  .stream-video{position:relative; aspect-ratio:16/9; background:var(--hitam);}
+  .stream-video iframe{width:100%; height:100%; border:0; display:block;}
+  .stream-info{padding:2.2rem 2.4rem; display:flex; flex-direction:column; justify-content:center;}
+  .stream-info h3{font-size:1.3rem; margin-bottom:.7rem;}
+  .stream-info p{color:var(--putih-dim); font-size:.87rem; line-height:1.7; margin-bottom:1.4rem;}
+
+  .live-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:1px; background:var(--line); border:1px solid var(--line);}
+  .live-card{background:var(--hitam); padding:2.4rem 2rem; transition:background .4s var(--ease), transform .4s var(--ease); position:relative; overflow:hidden;}
+  .live-card::before{content:attr(data-num); position:absolute; top:-10px; right:6px; font-size:5.5rem; font-weight:800; color:rgba(246,245,239,.04); line-height:1;}
+  .live-card:hover{background:var(--hijau-2); transform:translateY(-6px);}
+  .live-card h3{font-size:1.1rem; margin:1rem 0 .7rem;}
+  .live-card p{color:var(--putih-dim); font-size:.86rem; line-height:1.7;}
+  .live-icon{width:38px; height:38px; display:flex; align-items:center; justify-content:center; border:1px solid var(--emas); color:var(--emas);}
+
+  /* schedule table */
+  .schedule-wrap{margin-top:3.5rem;}
+  .schedule-head-row{display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:1rem; margin-bottom:1.4rem;}
+  .schedule-head-row h3{font-size:1.3rem;}
+  table.schedule{width:100%; border-collapse:collapse; background:rgba(7,19,14,.5); border:1px solid var(--line);}
+  table.schedule thead th{
+    text-align:left; font-size:.66rem; letter-spacing:.14em; text-transform:uppercase; color:var(--emas);
+    padding:1rem 1.2rem; border-bottom:1px solid var(--line);
+  }
+  table.schedule tbody td{
+    padding:1rem 1.2rem; font-size:.86rem; color:var(--putih-dim); border-bottom:1px solid var(--line);
+  }
+  table.schedule tbody tr{transition:background .3s var(--ease);}
+  table.schedule tbody tr:hover{background:rgba(182,154,92,.06);}
+  table.schedule td.status{white-space:nowrap;}
+  .status-badge{
+    display:inline-block; padding:.3rem .7rem; font-size:.66rem; letter-spacing:.08em; text-transform:uppercase; font-weight:700;
+  }
+  .status-badge.open{background:rgba(46,143,99,.18); color:var(--hijau-glow); border:1px solid var(--hijau-glow);}
+  .status-badge.full{background:rgba(182,154,92,.14); color:var(--emas); border:1px solid var(--emas);}
+  .status-badge.done{background:rgba(246,245,239,.06); color:var(--putih-dim); border:1px solid var(--line);}
+
+  .pagination{display:flex; align-items:center; justify-content:center; gap:.5rem; margin-top:1.6rem;}
+  .page-btn{
+    min-width:38px; height:38px; padding:0 .6rem; border:1px solid var(--line); background:transparent; color:var(--putih-dim);
+    font-size:.8rem; font-weight:700; display:flex; align-items:center; justify-content:center; gap:.4rem;
+    transition:all .3s var(--ease);
+  }
+  .page-btn:hover:not([disabled]){border-color:var(--emas); color:var(--emas);}
+  .page-btn.active{background:var(--emas); border-color:var(--emas); color:var(--hitam);}
+  .page-btn[disabled]{opacity:.35; cursor:not-allowed;}
+  .page-btn svg{width:14px;height:14px;}
+
+  /* ---------- VIDEO PERSEMBAHAN (slider) ---------- */
+  .videos-section{background:var(--hitam);}
+  .video-slider{position:relative;}
+  .video-track-wrap{overflow:hidden;}
+  .video-track{display:flex; gap:1.4rem; transition:transform .6s var(--ease);}
+  .video-card{
+    position:relative; flex:0 0 calc(33.333% - .95rem); aspect-ratio:16/10; overflow:hidden; cursor:pointer;
+    border:1px solid var(--line);
+  }
+  .video-card img{width:100%; height:100%; object-fit:cover; transition:transform .6s var(--ease);}
+  .video-card:hover img{transform:scale(1.08);}
+  .video-card::after{content:''; position:absolute; inset:0; background:linear-gradient(0deg, rgba(7,19,14,.85), transparent 55%);}
+  .play-badge{
+    position:absolute; top:50%; left:50%; transform:translate(-50%,-50%);
+    width:58px; height:58px; border-radius:50%; border:1px solid var(--emas); background:rgba(7,19,14,.55);
+    display:flex; align-items:center; justify-content:center; z-index:2; transition:all .35s var(--ease);
+  }
+  .video-card:hover .play-badge{background:var(--emas); transform:translate(-50%,-50%) scale(1.08);}
+  .play-badge svg{width:18px; height:18px; color:var(--putih); margin-left:2px;}
+  .video-card:hover .play-badge svg{color:var(--hitam);}
+  .video-meta{position:absolute; bottom:14px; left:16px; right:16px; z-index:2;}
+  .video-meta h4{font-size:.92rem; margin-bottom:.2rem;}
+  .video-meta span{font-size:.7rem; color:var(--putih-dim); letter-spacing:.06em;}
+
+  .slider-controls{display:flex; justify-content:flex-end; gap:.7rem; margin-top:1.6rem;}
+  .slider-arrow{
+    width:42px; height:42px; border:1px solid var(--line); background:transparent; color:var(--putih);
+    display:flex; align-items:center; justify-content:center; transition:all .3s var(--ease);
+  }
+  .slider-arrow:hover:not([disabled]){border-color:var(--emas); color:var(--emas);}
+  .slider-arrow[disabled]{opacity:.3; cursor:not-allowed;}
+  .slider-arrow svg{width:16px;height:16px;}
+
+  /* video modal */
+  .modal{
+    position:fixed; inset:0; z-index:300; background:rgba(7,19,14,.92);
+    display:flex; align-items:center; justify-content:center; padding:4vw;
+    opacity:0; pointer-events:none; transition:opacity .4s var(--ease);
+  }
+  .modal.open{opacity:1; pointer-events:auto;}
+  .modal-content{width:100%; max-width:920px; aspect-ratio:16/9; background:var(--hitam); position:relative; border:1px solid var(--line);}
+  .modal-content iframe{width:100%; height:100%; border:0;}
+  .modal-close{
+    position:absolute; top:-46px; right:0; width:36px; height:36px; border:1px solid var(--line); background:transparent;
+    color:var(--putih); display:flex; align-items:center; justify-content:center; transition:all .3s var(--ease);
+  }
+  .modal-close:hover{border-color:var(--emas); color:var(--emas);}
+  .modal-close svg{width:16px;height:16px;}
+
+  /* ---------- JUALAN ---------- */
+  .jualan{background:var(--putih); color:var(--hitam);}
+  .jualan .eyebrow{color:var(--hijau-3);}
+  .jualan .section-head p{color:#4d564f;}
+  .shop-grid{display:grid; grid-template-columns:1fr 1fr 1fr; gap:2rem;}
+  .product-card{background:var(--hijau-1); color:var(--putih); position:relative; overflow:hidden;}
+  .product-media{position:relative; aspect-ratio:1/1; overflow:hidden;}
+  .product-media img{width:100%; height:100%; object-fit:cover; transition:transform .7s var(--ease);}
+  .product-card:hover .product-media img{transform:scale(1.08);}
+  .product-tag{position:absolute; top:14px; left:14px; z-index:2; background:var(--emas); color:var(--hitam); font-size:.62rem; letter-spacing:.12em; text-transform:uppercase; font-weight:700; padding:.35rem .7rem;}
+  .product-body{padding:1.6rem 1.5rem 1.9rem;}
+  .product-body h3{font-size:1.1rem; margin-bottom:.4rem;}
+  .product-body p{color:var(--putih-dim); font-size:.82rem; line-height:1.6; margin-bottom:1.1rem;}
+  .product-foot{display:flex; align-items:center; justify-content:space-between;}
+  .price{font-size:1.15rem; font-weight:700; color:var(--emas);}
+  .buy-btn{width:40px; height:40px; border:1px solid var(--emas); display:flex; align-items:center; justify-content:center; color:var(--emas); transition:all .35s var(--ease); background:transparent;}
+  .buy-btn:hover{background:var(--emas); color:var(--hitam); transform:rotate(90deg);}
+  .buy-btn svg{width:16px; height:16px;}
+
+  /* ---------- GALLERY SLIDER ---------- */
+  .gallery{background:var(--hijau-1);}
+  .gallery-slider{position:relative; overflow:hidden; border:1px solid var(--line);}
+  .gallery-track{display:flex; transition:transform .6s var(--ease);}
+  .gallery-slide{position:relative; flex:0 0 100%; aspect-ratio:16/7; background-size:cover; background-position:center;}
+  .gallery-slide::after{content:''; position:absolute; inset:0; background:linear-gradient(0deg, rgba(7,19,14,.75), transparent 50%);}
+  .gallery-caption{position:absolute; bottom:20px; left:26px; z-index:2; font-size:.72rem; letter-spacing:.18em; text-transform:uppercase;}
+  .gallery-counter{position:absolute; bottom:20px; right:26px; z-index:2; font-size:.72rem; color:var(--putih-dim); letter-spacing:.1em;}
+  .gallery-arrow{
+    position:absolute; top:50%; transform:translateY(-50%); z-index:3;
+    width:44px; height:44px; border:1px solid var(--line); background:rgba(7,19,14,.55); color:var(--putih);
+    display:flex; align-items:center; justify-content:center; transition:all .3s var(--ease);
+  }
+  .gallery-arrow:hover{border-color:var(--emas); color:var(--emas);}
+  .gallery-arrow.prev{left:16px;}
+  .gallery-arrow.next{right:16px;}
+  .gallery-arrow svg{width:16px;height:16px;}
+  .gallery-dots{display:flex; justify-content:center; gap:.5rem; margin-top:1.4rem;}
+  .gallery-dots .dot{width:8px; height:8px; border-radius:50%; border:1px solid var(--line); background:transparent; transition:all .3s var(--ease);}
+  .gallery-dots .dot.active{background:var(--emas); border-color:var(--emas);}
+
+  /* ---------- TESTIMONI ---------- */
+  .testi{background:var(--hitam); text-align:center;}
+  .testi blockquote{font-family:'Amiri',serif; font-style:italic; font-size:clamp(1.2rem,2.6vw,2rem); max-width:820px; margin:0 auto; line-height:1.6; color:var(--putih);}
+  .testi cite{display:block; margin-top:1.6rem; font-style:normal; font-size:.78rem; letter-spacing:.14em; text-transform:uppercase; color:var(--emas);}
+
+  /* ---------- CONTACT ---------- */
+  .contact{background:var(--hijau-2); position:relative;}
+  .contact-grid{display:grid; grid-template-columns:1fr 1fr; gap:4rem; align-items:start;}
+  .contact-copy h2{font-size:clamp(1.9rem,3.4vw,2.8rem); margin-bottom:1.2rem;}
+  .contact-copy p{color:var(--putih-dim); line-height:1.8; margin-bottom:2rem; max-width:420px;}
+  .contact-list{display:grid; gap:1.1rem;}
+  .contact-list a{display:flex; align-items:center; gap:.9rem; font-size:.92rem; font-weight:600; padding-bottom:1rem; border-bottom:1px solid var(--line); transition:color .3s var(--ease), padding-left .3s var(--ease);}
+  .contact-list a:hover{color:var(--emas); padding-left:.4rem;}
+  .contact-list a svg{width:18px; height:18px; color:var(--emas); flex-shrink:0;}
+  .form-card{background:rgba(7,19,14,.55); border:1px solid var(--line); padding:2.2rem;}
+  .form-row{display:grid; gap:1.3rem;}
+  .field{display:flex; flex-direction:column; gap:.5rem;}
+  .field label{font-size:.66rem; letter-spacing:.14em; text-transform:uppercase; color:var(--putih-dim);}
+  .field input, .field select, .field textarea{background:transparent; border:none; border-bottom:1px solid var(--line); padding:.6rem .1rem; color:var(--putih); font-family:inherit; font-size:.92rem; transition:border-color .3s var(--ease);}
+  .field select option{background:var(--hijau-1);}
+  .field input:focus, .field select:focus, .field textarea:focus{outline:none; border-color:var(--emas);}
+  .field.error input, .field.error textarea{border-color:#c0564f;}
+  .field-msg{font-size:.68rem; color:#d98c86; min-height:1em;}
+  .form-card .btn{margin-top:1.6rem; width:100%; justify-content:center;}
+  .form-success{display:none; text-align:center; padding:2rem 1rem;}
+  .form-success.show{display:block;}
+  .form-success svg{width:44px; height:44px; color:var(--hijau-glow); margin-bottom:1rem;}
+  .form-success h3{font-size:1.2rem; margin-bottom:.5rem;}
+  .form-success p{color:var(--putih-dim); font-size:.85rem;}
+
+  footer{background:var(--hitam); padding:2.2rem 0; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:1rem; font-size:.75rem; color:var(--putih-dim);}
+  .footer-logo{font-family:'Qwigley',cursive; font-size:1.5rem; color:var(--putih);}
+  .footer-social{display:flex; gap:1rem;}
+  .footer-social a{width:34px; height:34px; border:1px solid var(--line); display:flex; align-items:center; justify-content:center; transition:all .3s var(--ease);}
+  .footer-social a:hover{border-color:var(--emas); color:var(--emas); transform:translateY(-3px);}
+  .footer-social svg{width:14px;height:14px;}
+
+  /* ---------- TOAST ---------- */
+  .toast{
+    position:fixed; bottom:24px; left:50%; transform:translateX(-50%) translateY(20px);
+    background:var(--putih); color:var(--hitam); padding:.9rem 1.4rem; font-size:.82rem; font-weight:600;
+    display:flex; align-items:center; gap:.7rem; z-index:400; opacity:0; pointer-events:none;
+    transition:all .4s var(--ease); box-shadow:0 12px 30px rgba(0,0,0,.35);
+  }
+  .toast.show{opacity:1; transform:translateX(-50%) translateY(0);}
+  .toast svg{width:16px;height:16px; color:var(--hijau-3); flex-shrink:0;}
+
+  @media (prefers-reduced-motion: reduce){
+    *{animation-duration:.01ms !important; animation-iteration-count:1 !important; transition-duration:.01ms !important; scroll-behavior:auto !important;}
+  }
+
+  /* ===================== TABLET ===================== */
+  @media (max-width:1024px){
+    .wrap{padding:0 5vw;}
+    .about-grid,.contact-grid{grid-template-columns:1fr;}
+    .stream-card{grid-template-columns:1fr;}
+    .video-card{flex:0 0 calc(50% - .7rem);}
+    .nav-links,.nav-cta{display:none;}
+    .nav-toggle{display:flex;}
+    .section-head{grid-template-columns:1fr; gap:1.2rem;}
+    .live-grid{grid-template-columns:1fr 1fr;}
+    .shop-grid{grid-template-columns:1fr 1fr;}
+    table.schedule{font-size:.9rem;}
+  }
+
+  /* ===================== MOBILE ===================== */
+  @media (max-width:640px){
+    section{padding:4.5rem 0;}
+    .hero-slide-inner{padding-top:2rem;}
+    .hero-slide h1{font-size:2rem;}
+    .hero-nav{bottom:1.4rem;}
+    .hero-scroll{display:none;}
+    .live-grid{grid-template-columns:1fr;}
+    .shop-grid{grid-template-columns:1fr;}
+    .video-card{flex:0 0 100%;}
+    .stat-chip{flex-wrap:wrap; gap:1rem;}
+    table.schedule{display:block; overflow-x:auto; white-space:nowrap;}
+    .live-cta-banner{flex-direction:column; align-items:flex-start;}
+    .gallery-slide{aspect-ratio:4/5;}
+    footer{flex-direction:column; text-align:center;}
+  }
+</style>
+</head>
+<body>
+
+<div class="nav-scrim" id="navScrim"></div>
+
+<header id="siteHeader">
+  <nav>
+    <a href="#top" class="nav-logo">Qathrunnada</a>
+    <div class="nav-links">
+      <a href="#profil">Profil</a>
+      <a href="#live">Live Show</a>
+      <a href="#video">Video</a>
+      <a href="#jualan">Jualan</a>
+      <a href="#galeri">Galeri</a>
+      <a href="#hubungi">Hubungi</a>
+    </div>
+    <div class="nav-right">
+      <a href="#hubungi" class="nav-cta">Tempah Show</a>
+      <button class="nav-toggle" id="navToggle" aria-label="Buka menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+</header>
+
+<div class="nav-mobile-panel" id="navMobilePanel">
+  <a href="#profil">Profil</a>
+  <a href="#live">Live Show</a>
+  <a href="#video">Video</a>
+  <a href="#jualan">Jualan</a>
+  <a href="#galeri">Galeri</a>
+  <a href="#hubungi" class="btn" style="justify-content:center;">Tempah Show</a>
+</div>
+
+<section class="hero" id="top">
+  <div class="hero-slides" id="heroSlides"></div>
+
+  <div class="hero-nav">
+    <div class="hero-dots" id="heroDots"></div>
+    <div class="hero-arrows">
+      <button class="hero-arrow" id="heroPrev" aria-label="Banner sebelum">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg>
+      </button>
+      <button class="hero-arrow" id="heroNext" aria-label="Banner seterusnya">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <div class="hero-scroll"><span>Skrol ke bawah</span></div>
+  <div class="arabesque"></div>
+</section>
+
+<section class="about" id="profil">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div>
+        <div class="eyebrow">Profil Kumpulan</div>
+        <h2>Warisan alunan,<br>disampaikan semula.</h2>
+      </div>
+      <p>Qathrunnada ditubuhkan atas semangat menyebarkan kalimah zikir dan selawat melalui muzik akustik tradisional. Setiap ahli membawa latar seni yang berbeza, disatukan oleh satu niat — nasyid sebagai ibadah, bukan sekadar hiburan.</p>
+    </div>
+
+    <div class="about-grid">
+      <div class="reveal">
+        <div class="about-photo">
+          <div class="stat-chip">
+            <div><b>7</b><span>Ahli Tetap</span></div>
+            <div><b>10+</b><span>Tahun Berkarya</span></div>
+            <div><b>200+</b><span>Persembahan</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="about-copy reveal">
+        <p>Dari majlis rumah ke pentas korporat, Qathrunnada membawa repertoir nasyid klasik dan aransemen kontemporari — dipersembahkan secara akustik penuh dengan rebana, marwas dan tar.</p>
+        <p>Album terkini, <em>Renungan Ramadhan &amp; Syawal</em>, menghimpunkan koleksi lagu renungan yang dihasilkan khas untuk mengiringi bulan ibadah — kini tersedia dalam format fizikal dan digital.</p>
+        <div class="pillar-list">
+          <div class="pillar"><b>Seni Vokal</b><span>Harmoni berlapis dengan olahan koir tradisional dan moden.</span></div>
+          <div class="pillar"><b>Alat Tradisi</b><span>Rebana, marwas, tar dan perkusi tangan sepenuhnya akustik.</span></div>
+          <div class="pillar"><b>Persembahan Live</b><span>Reka bentuk set list mengikut tema majlis — korporat, kenduri, ceramah.</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="live" id="live">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div>
+        <div class="eyebrow" style="color:var(--emas)">Persembahan Live</div>
+        <h2>Bawa Qathrunnada<br>ke majlis anda.</h2>
+      </div>
+      <p style="color:var(--putih-dim)">Setiap tempahan disesuaikan mengikut skala majlis — dari sesi intim 30 minit sehingga persembahan penuh malam korporat, lengkap dengan sistem bunyi dan barisan pemain alat muzik.</p>
+    </div>
+
+    <div class="stream-card reveal">
+      <div class="stream-video">
+        <iframe id="liveStreamFrame"
+          src="https://www.youtube.com/embed/jfKfPfyJRdk"
+          title="Qathrunnada Live Stream"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowfullscreen loading="lazy"></iframe>
+      </div>
+      <div class="stream-info">
+        <div class="eyebrow" style="margin-bottom:.8rem;">
+          <span class="dot-live" style="width:6px;height:6px;border-radius:50%;background:var(--emas);animation:pulse 1.6s infinite;"></span>
+          Siaran Langsung YouTube
+        </div>
+        <h3>Ikuti persembahan secara live</h3>
+        <p>Tonton sesi live Qathrunnada terus dari YouTube. Semasa tiada siaran langsung, video akan memaparkan rakaman persembahan terkini.</p>
+        <a href="https://www.youtube.com/@qathrunnada" target="_blank" rel="noopener" class="btn btn-ghost">Lawat Channel YouTube
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+        </a>
+      </div>
+    </div>
+
+    <div class="live-grid reveal">
+      <div class="live-card" data-num="01">
+        <div class="live-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" width="18" height="18"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg></div>
+        <h3>Majlis Korporat &amp; Rasmi</h3>
+        <p>Persembahan penuh set 45–60 minit untuk dinner, pelancaran atau majlis penghargaan.</p>
+      </div>
+      <div class="live-card" data-num="02">
+        <div class="live-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" width="18" height="18"><path d="M3 21h18M5 21V7l7-4 7 4v14M9 9h1M9 13h1M14 9h1M14 13h1"/></svg></div>
+        <h3>Kenduri &amp; Majlis Keluarga</h3>
+        <p>Sesi akustik ringkas yang membawa suasana tenang — sesuai untuk majlis rumah dan surau.</p>
+      </div>
+      <div class="live-card" data-num="03">
+        <div class="live-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" width="18" height="18"><path d="M12 2v20M5 8l7-6 7 6M5 16l7 6 7-6"/></svg></div>
+        <h3>Ceramah &amp; Program Ibadah</h3>
+        <p>Selawat dan nasyid pengiring untuk program tazkirah, kem motivasi dan majlis ilmu.</p>
+      </div>
+    </div>
+
+    <div class="schedule-wrap reveal">
+      <div class="schedule-head-row">
+        <h3>Jadual Persembahan</h3>
+        <span style="font-size:.78rem;color:var(--putih-dim);">Klik nombor halaman untuk lihat lebih tarikh</span>
+      </div>
+      <div style="overflow-x:auto;">
+        <table class="schedule" id="scheduleTable">
+          <thead>
+            <tr><th>Tarikh</th><th>Majlis</th><th>Lokasi</th><th>Status</th></tr>
+          </thead>
+          <tbody id="scheduleBody"></tbody>
+        </table>
+      </div>
+      <div class="pagination" id="schedulePagination"></div>
+    </div>
+
+    <div class="live-cta-banner reveal" style="margin-top:3.5rem; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:1.6rem; padding:2.4rem 2.6rem; border:1px solid var(--line); background:rgba(19,70,50,.35);">
+      <div>
+        <h3 style="font-size:1.4rem;">Sedia untuk tarikh majlis anda?</h3>
+        <p style="color:var(--putih-dim); font-size:.85rem; margin-top:.4rem;">Hantar butiran majlis dan kami akan kembalikan sebutharga dalam masa 24 jam.</p>
+      </div>
+      <a href="#hubungi" class="btn">Mula Tempahan
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+      </a>
+    </div>
+  </div>
+</section>
+
+<section class="videos-section" id="video">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div>
+        <div class="eyebrow">Video Persembahan</div>
+        <h2>Rakaman dari pentas.</h2>
+      </div>
+      <p>Koleksi video persembahan live Qathrunnada. Klik untuk tonton terus dalam pop-up.</p>
+    </div>
+
+    <div class="video-slider reveal">
+      <div class="video-track-wrap">
+        <div class="video-track" id="videoTrack"></div>
+      </div>
+      <div class="slider-controls">
+        <button class="slider-arrow" id="videoPrev" aria-label="Video sebelum">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg>
+        </button>
+        <button class="slider-arrow" id="videoNext" aria-label="Video seterusnya">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="jualan" id="jualan">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div>
+        <div class="eyebrow">Jualan Rasmi</div>
+        <h2>Bawa pulang<br>alunan Qathrunnada.</h2>
+      </div>
+      <p>Album, rakaman eksklusif dan barangan rasmi kumpulan — hasil jualan menyokong terus penghasilan karya seterusnya.</p>
+    </div>
+
+    <div class="shop-grid">
+      <div class="product-card reveal">
+        <div class="product-media">
+          <span class="product-tag">Album Terkini</span>
+          <img src="assets/album-art.jpg" alt="Album Renungan Ramadhan & Syawal">
+        </div>
+        <div class="product-body">
+          <h3>Renungan Ramadhan &amp; Syawal</h3>
+          <p>Koleksi lagu renungan rasmi Qathrunnada — format CD &amp; digital.</p>
+          <div class="product-foot">
+            <span class="price">RM 35</span>
+            <button class="buy-btn" data-name="Renungan Ramadhan & Syawal" aria-label="Tambah ke troli">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 6h15l-1.5 9h-12z"/><circle cx="9" cy="20" r="1"/><circle cx="18" cy="20" r="1"/></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="product-card reveal">
+        <div class="product-media">
+          <span class="product-tag">Baju Rasmi</span>
+          <img src="assets/group-photo.jpg" alt="Jubah rasmi Qathrunnada" style="object-position:center 15%;">
+        </div>
+        <div class="product-body">
+          <h3>Jubah Qathrunnada Edisi Ahli</h3>
+          <p>Replika pakaian rasmi kumpulan — kain sejuk, sulaman motif hijau &amp; emas.</p>
+          <div class="product-foot">
+            <span class="price">RM 120</span>
+            <button class="buy-btn" data-name="Jubah Qathrunnada Edisi Ahli" aria-label="Tambah ke troli">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 6h15l-1.5 9h-12z"/><circle cx="9" cy="20" r="1"/><circle cx="18" cy="20" r="1"/></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="product-card reveal">
+        <div class="product-media">
+          <span class="product-tag">Tempahan Khas</span>
+          <img src="assets/group-photo.jpg" alt="Persembahan live Qathrunnada" style="object-position:center 60%;">
+        </div>
+        <div class="product-body">
+          <h3>Pakej Persembahan Live</h3>
+          <p>Tempah slot persembahan penuh berserta alat muzik &amp; sistem bunyi.</p>
+          <div class="product-foot">
+            <span class="price">Mula RM 1,800</span>
+            <button class="buy-btn" data-scroll="#hubungi" aria-label="Hubungi kami">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="gallery" id="galeri">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div>
+        <div class="eyebrow">Galeri</div>
+        <h2>Di sebalik tirai.</h2>
+      </div>
+      <p>Detik dari sesi latihan, rakaman studio dan pentas — alat muzik, jubah dan suasana yang membentuk identiti Qathrunnada.</p>
+    </div>
+
+    <div class="reveal">
+      <div class="gallery-slider">
+        <button class="gallery-arrow prev" id="galPrev" aria-label="Gambar sebelum">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg>
+        </button>
+        <div class="gallery-track" id="galleryTrack"></div>
+        <button class="gallery-arrow next" id="galNext" aria-label="Gambar seterusnya">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+        </button>
+      </div>
+      <div class="gallery-dots" id="galleryDots"></div>
+    </div>
+  </div>
+</section>
+
+<section class="testi">
+  <div class="wrap">
+    <div class="reveal">
+      <blockquote>"Setiap persembahan Qathrunnada bukan sekadar muzik — ia satu ingatan kepada pendengar untuk kembali kepada zikir."</blockquote>
+      <cite>— Panel Juri, Festival Nasyid Kebangsaan</cite>
+    </div>
+  </div>
+</section>
+
+<section class="contact" id="hubungi">
+  <div class="wrap">
+    <div class="contact-grid">
+      <div class="contact-copy reveal">
+        <div class="eyebrow" style="color:var(--emas)">Hubungi Kami</div>
+        <h2>Mari rancang<br>majlis anda.</h2>
+        <p>Sama ada untuk tempahan persembahan, kerjasama rakaman atau pertanyaan jualan — kami sedia membantu.</p>
+        <div class="contact-list">
+          <a href="mailto:booking@qathrunnada.my">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 4h16v16H4z"/><path d="M4 7l8 6 8-6"/></svg>
+            booking@qathrunnada.my
+          </a>
+          <a href="tel:+60123456789">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3 19.5 19.5 0 0 1-6-6 19.8 19.8 0 0 1-3-8.7A2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 2 .7 3a2 2 0 0 1-.5 2.1L8 10a16 16 0 0 0 6 6l1.2-1.3a2 2 0 0 1 2.1-.5c1 .3 2 .5 3 .7a2 2 0 0 1 1.7 2z"/></svg>
+            +60 12-345 6789
+          </a>
+          <a href="https://www.youtube.com/@qathrunnada" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="2" y="5" width="20" height="14" rx="4"/><path d="M10 9l5 3-5 3z"/></svg>
+            youtube.com/@qathrunnada
+          </a>
+        </div>
+      </div>
+
+      <div class="form-card reveal">
+        <form id="bookingForm" novalidate>
+          <div class="form-row">
+            <div class="field" id="fieldNama">
+              <label for="nama">Nama Penuh</label>
+              <input id="nama" name="nama" type="text" placeholder="Nama anda" required>
+              <span class="field-msg"></span>
+            </div>
+            <div class="field">
+              <label for="jenis">Jenis Majlis</label>
+              <select id="jenis" name="jenis">
+                <option>Majlis Korporat</option>
+                <option>Kenduri / Majlis Keluarga</option>
+                <option>Ceramah / Program Ibadah</option>
+                <option>Lain-lain</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="tarikh">Tarikh Majlis</label>
+              <input id="tarikh" name="tarikh" type="date">
+            </div>
+            <div class="field" id="fieldMesej">
+              <label for="mesej">Butiran Majlis</label>
+              <textarea id="mesej" name="mesej" rows="3" placeholder="Lokasi, anggaran tetamu, keperluan khas..." required></textarea>
+              <span class="field-msg"></span>
+            </div>
+          </div>
+          <button type="submit" class="btn">Hantar Permintaan
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+          </button>
+        </form>
+        <div class="form-success" id="formSuccess">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M8 12l3 3 5-6"/></svg>
+          <h3>Permintaan dihantar!</h3>
+          <p>Terima kasih. Pasukan Qathrunnada akan hubungi anda dalam masa 24 jam.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap" style="width:100%; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:1rem;">
+    <span class="footer-logo">Qathrunnada</span>
+    <span>© 2026 Qathrunnada. Hak cipta terpelihara.</span>
+    <div class="footer-social">
+      <a href="#" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1"/></svg></a>
+      <a href="https://www.youtube.com/@qathrunnada" target="_blank" rel="noopener" aria-label="YouTube"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="2" y="5" width="20" height="14" rx="4"/><path d="M10 9l5 3-5 3z"/></svg></a>
+      <a href="#" aria-label="TikTok"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M9 8v8a3 3 0 1 1-2-2.8"/><path d="M9 2c0 3 2 5 5 5"/></svg></a>
+    </div>
+  </div>
+</footer>
+
+<div class="modal" id="videoModal">
+  <div class="modal-content">
+    <button class="modal-close" id="modalClose" aria-label="Tutup video">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
+    </button>
+    <iframe id="modalIframe" src="" title="Video Persembahan" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>
+  </div>
+</div>
+
+<div class="toast" id="toast">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M8 12l3 3 5-6"/></svg>
+  <span id="toastMsg">Berjaya!</span>
+</div>
+
+<script>
+/* ============ DATA — edit di sini untuk kemas kini kandungan ============ */
+
+// Banner hero mingguan — tukar "img" ikut minggu semasa
+const heroSlides = [
+  {
+    img:'assets/hero/banner-minggu-1.png',
+    week:'Minggu Ini · 29 Mei – 1 Jun 2026',
+    title:'Karnival Imarah Masjid — Jom Makan Food Fest',
+    desc:'Qathrunnada tampil bersama Dato\' Ustaz Kazim Elias, Ustaz Harry Santhe Magic, Rozie Othman, Ady Aris & Alan Propa. 11 pagi – 11 malam di Masjid Nurul Jannah, Meru Klang.',
+    ctaText:'Lihat Butiran', ctaLink:'#hubungi'
+  },
+  {
+    img:'assets/hero/banner-minggu-2.jpg',
+    week:'Minggu Depan · 6 – 12 Julai',
+    title:'Pelancaran Album Renungan Ramadhan & Syawal',
+    desc:'Jelajah pelancaran album terkini bersama sesi tanda tangan dan jualan istimewa CD fizikal.',
+    ctaText:'Beli Album', ctaLink:'#jualan'
+  },
+  {
+    img:'assets/hero/banner-minggu-3.jpg',
+    week:'Akan Datang · 13 – 19 Julai',
+    title:'Malam Korporat & Persembahan Swasta',
+    desc:'Tempah slot persembahan eksklusif untuk majlis korporat, kenduri atau program ibadah anda.',
+    ctaText:'Mula Tempahan', ctaLink:'#live'
+  }
+];
+
+// Jadual persembahan — table dengan smart pagination
+const scheduleRows = [
+  ['5 Jul 2026','Malam Amal Kebajikan','Kompleks Islam, Kuala Lumpur','open'],
+  ['12 Jul 2026','Pelancaran Album','Dewan Serbaguna, Shah Alam','open'],
+  ['19 Jul 2026','Majlis Korporat Swasta','Hotel Grand, Putrajaya','full'],
+  ['26 Jul 2026','Ceramah Perdana','Masjid Negeri, Selangor','open'],
+  ['2 Ogos 2026','Kenduri Keluarga','Dewan Komuniti, Klang','full'],
+  ['9 Ogos 2026','Program Kem Motivasi','Kem Belia, Genting','open'],
+  ['16 Ogos 2026','Malam Korporat','Menara ABC, KLCC','open'],
+  ['23 Ogos 2026','Majlis Sambutan Merdeka','Dataran Bandar, Melaka','open'],
+  ['6 Sep 2026','Persembahan Amal','Pusat Islam, Johor Bahru','done'],
+  ['20 Sep 2026','Konsert Nasyid Kebangsaan','Stadium Tertutup, Kuantan','open'],
+];
+const ROWS_PER_PAGE = 4;
+
+// Video persembahan — YouTube Video ID sahaja
+const videoSlides = [
+  {id:'jfKfPfyJRdk', title:'Selawat Rindu — Live Session', venue:'Studio Qathrunnada · 2026'},
+  {id:'M7lc1UVf-VE', title:'Konsert Nasyid Kebangsaan', venue:'Stadium Tertutup Kuantan'},
+  {id:'5qap5aO4i9A', title:'Renungan Ramadhan — Persembahan Penuh', venue:'Kompleks Islam, KL'},
+  {id:'ysz5S6PUM-U', title:'Majlis Korporat Highlights', venue:'Menara ABC, KLCC'},
+];
+
+// Galeri slaid
+const gallerySlides = [
+  {img:'assets/gallery/gallery-01.jpg', caption:'Sesi Kumpulan'},
+  {img:'assets/gallery/gallery-02.jpg', caption:'Album — Renungan Ramadhan & Syawal'},
+  {img:'assets/gallery/gallery-03.jpg', caption:'Latihan Vokal'},
+  {img:'assets/gallery/gallery-04.jpg', caption:'Rakaman Studio'},
+  {img:'assets/gallery/gallery-05.jpg', caption:'Pentas Live'},
+  {img:'assets/gallery/gallery-06.jpg', caption:'Rebana & Marwas'},
+];
+
+/* ============ HERO CAROUSEL ============ */
+const heroSlidesEl = document.getElementById('heroSlides');
+const heroDotsEl = document.getElementById('heroDots');
+let heroIndex = 0, heroTimer = null;
+
+function buildHero(){
+  heroSlidesEl.innerHTML = heroSlides.map((s,i)=>`
+    <div class="hero-slide${i===0?' active':''}" style="background-image:url('${s.img}')" data-i="${i}">
+      <div class="wrap">
+        <div class="hero-slide-inner">
+          <span class="week-tag"><span class="dot-live"></span>${s.week}</span>
+          <h1>${s.title}</h1>
+          <p>${s.desc}</p>
+          <div class="hero-cta-row">
+            <a href="${s.ctaLink}" class="btn">${s.ctaText}
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+            </a>
+            <a href="#profil" class="btn btn-ghost">Ketahui Lebih
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>`).join('');
+  heroDotsEl.innerHTML = heroSlides.map((_,i)=>`<button class="dot${i===0?' active':''}" data-i="${i}"><span></span></button>`).join('');
+}
+function goHero(i){
+  heroIndex = (i + heroSlides.length) % heroSlides.length;
+  document.querySelectorAll('.hero-slide').forEach((el,idx)=>el.classList.toggle('active', idx===heroIndex));
+  document.querySelectorAll('.hero-dots .dot').forEach((el,idx)=>el.classList.toggle('active', idx===heroIndex));
+  restartHeroTimer();
+}
+function restartHeroTimer(){
+  clearInterval(heroTimer);
+  heroTimer = setInterval(()=>goHero(heroIndex+1), 8000);
+}
+buildHero();
+restartHeroTimer();
+document.getElementById('heroPrev').addEventListener('click', ()=>goHero(heroIndex-1));
+document.getElementById('heroNext').addEventListener('click', ()=>goHero(heroIndex+1));
+heroDotsEl.addEventListener('click', e=>{
+  const btn = e.target.closest('.dot');
+  if(btn) goHero(Number(btn.dataset.i));
+});
+
+/* ============ SCHEDULE TABLE — smart pagination ============ */
+const scheduleBody = document.getElementById('scheduleBody');
+const schedulePagination = document.getElementById('schedulePagination');
+let currentPage = 1;
+const totalPages = Math.ceil(scheduleRows.length / ROWS_PER_PAGE);
+const statusLabel = {open:'Tempahan Dibuka', full:'Penuh', done:'Selesai'};
+
+function renderSchedulePage(page){
+  currentPage = Math.min(Math.max(page,1), totalPages);
+  const start = (currentPage-1)*ROWS_PER_PAGE;
+  const rows = scheduleRows.slice(start, start+ROWS_PER_PAGE);
+  scheduleBody.innerHTML = rows.map(r=>`
+    <tr>
+      <td>${r[0]}</td><td>${r[1]}</td><td>${r[2]}</td>
+      <td class="status"><span class="status-badge ${r[3]}">${statusLabel[r[3]]}</span></td>
+    </tr>`).join('');
+  renderPagination();
+}
+function renderPagination(){
+  let html = `<button class="page-btn" id="pagePrev" ${currentPage===1?'disabled':''} aria-label="Halaman sebelum">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg></button>`;
+  for(let p=1;p<=totalPages;p++){
+    html += `<button class="page-btn${p===currentPage?' active':''}" data-page="${p}">${p}</button>`;
+  }
+  html += `<button class="page-btn" id="pageNext" ${currentPage===totalPages?'disabled':''} aria-label="Halaman seterusnya">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg></button>`;
+  schedulePagination.innerHTML = html;
+}
+schedulePagination.addEventListener('click', e=>{
+  const pageBtn = e.target.closest('[data-page]');
+  if(pageBtn){ renderSchedulePage(Number(pageBtn.dataset.page)); return; }
+  if(e.target.closest('#pagePrev')) renderSchedulePage(currentPage-1);
+  if(e.target.closest('#pageNext')) renderSchedulePage(currentPage+1);
+});
+renderSchedulePage(1);
+
+/* ============ VIDEO SLIDER + MODAL ============ */
+const videoTrack = document.getElementById('videoTrack');
+function ytThumb(id){ return `https://img.youtube.com/vi/${id}/hqdefault.jpg`; }
+videoTrack.innerHTML = videoSlides.map(v=>`
+  <div class="video-card" data-id="${v.id}">
+    <img src="${ytThumb(v.id)}" alt="${v.title}" loading="lazy"
+         onerror="this.src='assets/videos/video-thumb-01.jpg'">
+    <div class="play-badge"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></div>
+    <div class="video-meta"><h4>${v.title}</h4><span>${v.venue}</span></div>
+  </div>`).join('');
+
+let videoPos = 0;
+function cardsPerView(){
+  return window.innerWidth <= 640 ? 1 : window.innerWidth <= 1024 ? 2 : 3;
+}
+function updateVideoSlider(){
+  const cpv = cardsPerView();
+  const maxPos = Math.max(0, videoSlides.length - cpv);
+  videoPos = Math.min(videoPos, maxPos);
+  const cardW = videoTrack.children[0] ? videoTrack.children[0].getBoundingClientRect().width + 22 : 0;
+  videoTrack.style.transform = `translateX(-${videoPos*cardW}px)`;
+  document.getElementById('videoPrev').disabled = videoPos<=0;
+  document.getElementById('videoNext').disabled = videoPos>=maxPos;
+}
+document.getElementById('videoPrev').addEventListener('click', ()=>{ videoPos--; updateVideoSlider(); });
+document.getElementById('videoNext').addEventListener('click', ()=>{ videoPos++; updateVideoSlider(); });
+window.addEventListener('resize', updateVideoSlider);
+setTimeout(updateVideoSlider, 50);
+
+const videoModal = document.getElementById('videoModal');
+const modalIframe = document.getElementById('modalIframe');
+videoTrack.addEventListener('click', e=>{
+  const card = e.target.closest('.video-card');
+  if(!card) return;
+  modalIframe.src = `https://www.youtube.com/embed/${card.dataset.id}?autoplay=1`;
+  videoModal.classList.add('open');
+});
+function closeModal(){ videoModal.classList.remove('open'); modalIframe.src=''; }
+document.getElementById('modalClose').addEventListener('click', closeModal);
+videoModal.addEventListener('click', e=>{ if(e.target===videoModal) closeModal(); });
+document.addEventListener('keydown', e=>{ if(e.key==='Escape') closeModal(); });
+
+/* ============ GALLERY SLIDER ============ */
+const galleryTrack = document.getElementById('galleryTrack');
+const galleryDots = document.getElementById('galleryDots');
+galleryTrack.innerHTML = gallerySlides.map(g=>`
+  <div class="gallery-slide" style="background-image:url('${g.img}')">
+    <span class="gallery-caption">${g.caption}</span>
+  </div>`).join('');
+galleryDots.innerHTML = gallerySlides.map((_,i)=>`<button class="dot${i===0?' active':''}" data-i="${i}"></button>`).join('');
+
+let galIndex = 0;
+function goGallery(i){
+  galIndex = (i + gallerySlides.length) % gallerySlides.length;
+  galleryTrack.style.transform = `translateX(-${galIndex*100}%)`;
+  document.querySelectorAll('.gallery-dots .dot').forEach((el,idx)=>el.classList.toggle('active', idx===galIndex));
+}
+document.getElementById('galPrev').addEventListener('click', ()=>goGallery(galIndex-1));
+document.getElementById('galNext').addEventListener('click', ()=>goGallery(galIndex+1));
+galleryDots.addEventListener('click', e=>{
+  const btn = e.target.closest('.dot');
+  if(btn) goGallery(Number(btn.dataset.i));
+});
+let galTimer = setInterval(()=>goGallery(galIndex+1), 6000);
+document.querySelector('.gallery-slider').addEventListener('mouseenter', ()=>clearInterval(galTimer));
+document.querySelector('.gallery-slider').addEventListener('mouseleave', ()=>{galTimer = setInterval(()=>goGallery(galIndex+1), 6000);});
+
+/* ============ TOAST ============ */
+const toast = document.getElementById('toast');
+const toastMsg = document.getElementById('toastMsg');
+let toastTimer = null;
+function showToast(msg){
+  toastMsg.textContent = msg;
+  toast.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(()=>toast.classList.remove('show'), 3200);
+}
+
+/* ============ BUY / CTA BUTTONS ============ */
+document.querySelectorAll('.buy-btn').forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    if(btn.dataset.scroll){
+      document.querySelector(btn.dataset.scroll)?.scrollIntoView({behavior:'smooth'});
+      return;
+    }
+    showToast(`${btn.dataset.name} ditambah ke senarai tempahan`);
+  });
+});
+
+/* ============ NAV: scroll state + slide-in mobile menu ============ */
+const header = document.getElementById('siteHeader');
+window.addEventListener('scroll', ()=>{
+  header.classList.toggle('scrolled', window.scrollY > 40);
+});
+const navToggle = document.getElementById('navToggle');
+const navPanel = document.getElementById('navMobilePanel');
+const navScrim = document.getElementById('navScrim');
+function toggleNav(open){
+  navToggle.classList.toggle('open', open);
+  navPanel.classList.toggle('open', open);
+  navScrim.classList.toggle('open', open);
+}
+navToggle.addEventListener('click', ()=>toggleNav(!navPanel.classList.contains('open')));
+navScrim.addEventListener('click', ()=>toggleNav(false));
+navPanel.querySelectorAll('a').forEach(a=>a.addEventListener('click', ()=>toggleNav(false)));
+
+/* ============ SCROLL REVEAL ============ */
+const revealEls = document.querySelectorAll('.reveal');
+const io = new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
+}, {threshold:.15});
+revealEls.forEach(el=>io.observe(el));
+
+/* ============ BOOKING FORM — validation + simulated submit ============ */
+const bookingForm = document.getElementById('bookingForm');
+const formSuccess = document.getElementById('formSuccess');
+bookingForm.addEventListener('submit', e=>{
+  e.preventDefault();
+  let valid = true;
+  const nama = document.getElementById('nama');
+  const mesej = document.getElementById('mesej');
+  const fieldNama = document.getElementById('fieldNama');
+  const fieldMesej = document.getElementById('fieldMesej');
+
+  fieldNama.classList.remove('error'); fieldNama.querySelector('.field-msg').textContent='';
+  fieldMesej.classList.remove('error'); fieldMesej.querySelector('.field-msg').textContent='';
+
+  if(!nama.value.trim()){
+    fieldNama.classList.add('error');
+    fieldNama.querySelector('.field-msg').textContent = 'Sila isi nama anda.';
+    valid = false;
+  }
+  if(!mesej.value.trim()){
+    fieldMesej.classList.add('error');
+    fieldMesej.querySelector('.field-msg').textContent = 'Sila nyatakan butiran majlis.';
+    valid = false;
+  }
+  if(!valid) return;
+
+  bookingForm.style.display = 'none';
+  formSuccess.classList.add('show');
+  showToast('Permintaan tempahan berjaya dihantar');
+  bookingForm.reset();
+});
+</script>
+
+</body>
+</html>
